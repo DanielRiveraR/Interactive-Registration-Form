@@ -207,12 +207,12 @@ formElement.addEventListener('submit', (e) => {
     errorValidation(regexEmail, emailInput, e);
     errorValidation(activitiesValidator,activities.firstElementChild, e);
     
-
     const paymentElement = document.getElementById('payment');
-    // const ccInfo = document.getElementById('cc-num');
+    
     if (paymentElement.firstElementChild ="credit-card") {
         errorValidation(regexCCard, cardNumber, e);
         errorValidation(regexZip, zipCode, e);
         errorValidation(regexCvv,cvv, e);
     } 
+    
 });
