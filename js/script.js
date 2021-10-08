@@ -180,17 +180,39 @@ function errorValidation(test, element, event) {
 }
 
 
+/** Real-time error messages */
+nameField.addEventListener('keydown', (e) => {
+    const nameHint = document.getElementById('name-hint');
+    if (nameField.value === '') {
+        nameHint.style.display = 'block';
+    }
+    regexName();
+});
+
+emailInput.addEventListener('keydown', (e) => {
+    if (emailInput.value === '') {
+        emailHint.style.display = 'block';
+        emailHint.innerHTML = 'Email field cannot be blank';
+    } else if (!regexEmail()) {
+        emailHint.innerHTML = 'Email address must be formatted correctly';
+    }
+    regexEmail();
+});
+
+
 /** This event handler validates each required form field or section when the form submission is detected. 
  * Checks to ensure that they have been filled out correctly. If any of the following required fields is not valid, the form’s submission should be prevented.*/
 formElement.addEventListener('submit', (e) => {
     errorValidation(regexName, nameField, e);
     errorValidation(regexEmail, emailInput, e);
     errorValidation(activitiesValidator,activities.firstElementChild, e);
+    
 
-    const ccInfo = document.getElementById('credit-card');
-    if (ccInfo.style.display === '') {
+    const paymentElement = document.getElementById('payment');
+    // const ccInfo = document.getElementById('cc-num');
+    if (paymentElement.firstElementChild ="credit-card") {
         errorValidation(regexCCard, cardNumber, e);
         errorValidation(regexZip, zipCode, e);
         errorValidation(regexCvv,cvv, e);
-    }
+    } 
 });
