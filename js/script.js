@@ -52,23 +52,35 @@ const totalElement = document.getElementById('activities-cost');
 let totalCost = 0;
 let totalActivities= 0;
 
+/**Add accessibility */
+const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+for (let i =0; i < checkboxes.length; i++) {
+    
+    checkboxes[i].addEventListener('focus', (e) => {
+        e.target.parentElement.classList.add('focus');
+    });
+    checkboxes[i].addEventListener('blur', (e) => {
+        e.target.parentElement.classList.remove('focus');
+    });
+}
 
 /** This event handler allows users to see in real time their total cost base on their selections, either they check or uncheck boxes.  */
 activities.addEventListener('change', e => {
     const dataCost = +e.target.getAttribute('data-cost');
     const chekedBox = e.target;
 
-    for (let i = 0; i < chekedBox.length; i++) {
-        if (chekedBox.getAttribute('data-day-and-time') === chekedBox[i].getAttribute('data-day-and-time')) {
+    for (let i = 0; i < checkboxes.length; i++) {
+        if (chekedBox.getAttribute('data-day-and-time') === checkboxes[i].getAttribute('data-day-and-time')) {
             if (chekedBox.checked) {
-                chekedBox[i].disabled = true;
-                chekedBox[i].parentNode.classList.add('disabled');
+                checkboxes[i].disabled = true;
+                checkboxes[i].parentNode.classList.add('disabled');
+                
             } else if (!chekedBox.checked) {
-                chekedBox[i].disabled = false;
-                chekedBox[i].parentNode.classList.remove('disabled');
+                checkboxes[i].disabled = false;
+                checkboxes[i].parentNode.classList.remove('disabled');
             }
         }
-        chekedBox.parentElement.classList.remove('disable');
+        chekedBox.parentElement.classList.remove('disabled');
         chekedBox.disabled = false;
     }
     if (chekedBox.checked) {
@@ -80,7 +92,7 @@ activities.addEventListener('change', e => {
     }
     totalElement.innerHTML = `Total: $${totalCost}`;
 });
-
+ 
 
 /**Variables to work with payment's event listener */
 const paymentElement = document.getElementById('payment');
@@ -153,17 +165,7 @@ function activitiesValidator () {
     return activitiesSelected;
 }
 
-/**Add accessibility */
-const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-for (let i =0; i < checkboxes.length; i++) {
-    
-    checkboxes[i].addEventListener('focus', (e) => {
-        e.target.parentElement.classList.add('focus');
-    });
-    checkboxes[i].addEventListener('blur', (e) => {
-        e.target.parentElement.classList.remove('focus');
-    });
-}
+
 
 /**This function handles error validation */
 function errorValidation(test, element, event) {
@@ -181,20 +183,28 @@ function errorValidation(test, element, event) {
 
 
 /** Real-time error messages */
-nameField.addEventListener('keydown', (e) => {
+
+
+nameField.addEventListener('keyup', (e) => {
+    
     const nameHint = document.getElementById('name-hint');
-    if (nameField.value === '') {
+    if (e.target.value === '') {
         nameHint.style.display = 'block';
+    } else {
+        nameHint.style.display = 'none';
+
     }
     regexName();
 });
 
-emailInput.addEventListener('keydown', (e) => {
+emailInput.addEventListener('keyup', (e) => {
     if (emailInput.value === '') {
         emailHint.style.display = 'block';
         emailHint.innerHTML = 'Email field cannot be blank';
     } else if (!regexEmail()) {
         emailHint.innerHTML = 'Email address must be formatted correctly';
+    } else if (regexEmail()) {
+        emailHint.innerHTML = '';
     }
     regexEmail();
 });
@@ -209,10 +219,12 @@ formElement.addEventListener('submit', (e) => {
     
     const paymentElement = document.getElementById('payment');
     
-    if (paymentElement.firstElementChild ="credit-card") {
+    if (paymentElement.firstElementChild = "credit-card") {
         errorValidation(regexCCard, cardNumber, e);
         errorValidation(regexZip, zipCode, e);
         errorValidation(regexCvv,cvv, e);
+        
+    } else if (paymentElement.firstElementChild = 'paypal') {
+        console.log('Payment will be validated next page.');
     } 
-    
 });
