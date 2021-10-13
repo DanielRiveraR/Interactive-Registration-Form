@@ -219,12 +219,12 @@ formElement.addEventListener('submit', (e) => {
     
     const paymentElement = document.getElementById('payment');
     
-    if (paymentElement.firstElementChild = "credit-card") {
+    if (paymentElement[1].selected) {
         errorValidation(regexCCard, cardNumber, e);
         errorValidation(regexZip, zipCode, e);
         errorValidation(regexCvv,cvv, e);
         
-    } else if (paymentElement.firstElementChild = 'paypal') {
+    } else {
         console.log('Payment will be validated next page.');
     } 
 });
